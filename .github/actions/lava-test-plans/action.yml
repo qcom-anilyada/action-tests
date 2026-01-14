@@ -27,7 +27,7 @@ runs:
         with:
           repository: qualcomm-linux/lava-test-plans
           path: lava-test-plans
-          ref: master
+          ref: 67ed389fded4ce50a9c92a5c392aec213f96942a
       - uses: actions/setup-python@v6
         with:
           python-version: 3.11
