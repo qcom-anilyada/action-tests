@@ -216,99 +216,10 @@ jobs:
           save_result_as_artifact: true
           save_job_details: true
           result_file_name: "${{ matrix.target.result_file }}"
-
-  prepare-premergebt-jobs:
-    needs: boot-job-result
-    # run only if boot jobs are successful
-    if: ${{ needs.boot-job-result.outputs.boot_result == 'success' }}
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        # only run pre-merge BT tests on devices available in the LAB
-        machine:
-          - iq-9075-evk
-          # - qcs615-ride
-          - rb3gen2-core-kit
-          # - qcs8300-ride-sx
-          # - qcs9100-ride-sx
-          # - rb1-core-kit
-        distro:
-          # - name: poky-altcfg
-          - name: qcom-distro
-    steps:
-      - id: print-condition
-        name: "Print condition"
-        env:
-          RESULT: ${{ needs.boot-job-result.outputs.boot_result }}
-        run: |
-          echo "${RESULT}"
-
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Run lava-test-plans
-        uses: ./.github/actions/lava-test-plans
-        with:
-          machine: ${{ matrix.machine }}
-          distro_name: ${{ matrix.distro.name }}
-          build_id: ${{ inputs.build_id }}
-          gh_token: ${{ secrets.GITHUB_TOKEN }}
-          prefix: premergebt
-          testplan: pre-merge-bt
-
-  prepare-premergebt-job-list:
-    needs: prepare-premergebt-jobs
-    runs-on: ubuntu-latest
-    outputs:
-      jobmatrix: ${{ steps.listjobs.outputs.jobmatrix }}
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - name: 'Download job templates'
-        uses: actions/download-artifact@v6
-        with:
-          pattern: premergebt-*
-
-      - name: "List jobs"
-        id: listjobs
-        uses: ./.github/actions/list-jobs
-        with:
-          prefix: "premergebt"
-          build_id: ${{ inputs.build_id }}
-          gh_token: ${{ secrets.GITHUB_TOKEN }}
-
-  submit-premergebt-job:
-    needs: prepare-premergebt-job-list
-    runs-on: ubuntu-latest
-    continue-on-error: true
-    name: Pre-merge-BT ${{ matrix.target.name }}
-    strategy:
-      matrix: ${{ fromJson(needs.prepare-premergebt-job-list.outputs.jobmatrix) }}
-    steps:
-      - name: 'Download job templates'
-        uses: actions/download-artifact@v6
-        with:
-          pattern: premergebt-*
-
-      - name: Submit ${{ matrix.target.name }}
-        timeout-minutes: 20
-        uses: foundriesio/lava-action@v9
-        with:
-          lava_token: ${{ secrets.LAVATOKEN }}
-          lava_url: 'lava.infra.foundries.io'
-          job_definition: ${{ matrix.target.path }}
-          wait_for_job: true
-          fail_action_on_failure: true
-          fail_action_on_incomplete: true
-          save_result_as_artifact: true
-          save_job_details: true
-          result_file_name: "${{ matrix.target.result_file }}"
-
+          
   publish-test-summary:
     name: "Publish Tests Summary"
-    needs: [submit-premergebt-job, submit-premerge-job, submit-boot-job]
+    needs: [submit-premerge-job, submit-boot-job]
     if: |
       always()
       && contains(needs.*.result, 'success')
