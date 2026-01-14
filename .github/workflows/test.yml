@@ -83,7 +83,7 @@ jobs:
         id: submit
         uses: foundriesio/lava-action@v9
         with:
-          lava_token: ${{ secrets.LAVA_TOKEN }}
+          lava_token: ${{ secrets.LAVATOKEN }}
           lava_url: 'lava.infra.foundries.io'
           job_definition: ${{ matrix.target.path }}
           wait_for_job: true
@@ -207,7 +207,7 @@ jobs:
         timeout-minutes: 20
         uses: foundriesio/lava-action@v9
         with:
-          lava_token: ${{ secrets.LAVA_TOKEN }}
+          lava_token: ${{ secrets.LAVATOKEN }}
           lava_url: 'lava.infra.foundries.io'
           job_definition: ${{ matrix.target.path }}
           wait_for_job: true
