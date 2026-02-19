@@ -20,11 +20,11 @@ jobs:
           # - iq-8275-evk
           - iq-9075-evk
           # - qcm6490-idp
-          #- qcs615-ride
+          - qcs615-ride
           - rb3gen2-core-kit
-          #- qcs8300-ride-sx
-          # - qcs9100-ride-sx
-          #- rb1-core-kit
+          - qcs8300-ride-sx
+          - qcs9100-ride-sx
+          - rb1-core-kit
           # - qcom-armv8a
           #- qcom-armv7a
         distro:
@@ -136,11 +136,11 @@ jobs:
 #          - iq-8275-evk
           - iq-9075-evk
 #          - qcm6490-idp
-#          - qcs615-ride
+          - qcs615-ride
           - rb3gen2-core-kit
-#          - qcs8300-ride-sx
-          # - qcs9100-ride-sx
-          # - rb1-core-kit
+          - qcs8300-ride-sx
+          - qcs9100-ride-sx
+          - rb1-core-kit
 #          - qcom-armv8a
 #          - qcom-armv7a
         distro:

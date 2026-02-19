@@ -27,7 +27,7 @@ runs:
         with:
           repository: qcom-anilyada/lava-test-plans
           path: lava-test-plans
-          ref: b8b704d026a8e5147405f567f4f6c45f7607e700
+          ref: feature/optimizing-job-time
       - uses: actions/setup-python@v6
         with:
           python-version: 3.11
